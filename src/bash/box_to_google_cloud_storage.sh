@@ -8,7 +8,7 @@
 
 
 # create temporary directory
-mkdir ./tempreads
+mkdir $3
 
 # iterate through lines in ID file
 while read ID; do
@@ -18,20 +18,16 @@ while read ID; do
 
     # download file to temp directory
     echo "Downloading: ${FILENAME} (${ID}) . . ."
-    box files:download $ID --destination=./tempreads
+    box files:download $ID --destination=$3
 
     # upload file to google storage bucket
     echo "Uploading ${FILENAME} to bucket ${2} . . ."
-    gsutil cp ./tempreads/$FILENAME $2
+    gsutil cp $3/$FILENAME $2
 
     # remove file from temp directory
     echo "Remove ${FILENAME} from temporary directory"
-    rm ./tempreads/$FILENAME
+    rm $3/$FILENAME
 
     # end with newline for formating
     echo ""
 done < $1
-
-
-# remove temporary directory
-rm -r ./tempreads
